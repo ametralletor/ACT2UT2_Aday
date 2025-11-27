@@ -10,6 +10,7 @@ import { authActions } from '../src/store/authSlice.ts';
 
 
 
+
 function Login() {
   const dispatch = useDispatch()
   const [datos, setDatos] = useState({ name: '', pass: '' })
@@ -17,28 +18,11 @@ function Login() {
 
 
 
- //datos de inicio de sesion:
- const bduser= 'aday'
- const bdpassword= '1234'
-
-
 const navigate = useNavigate()
 
   const handleSubmit = (e:any) => {
   e.preventDefault(); 
-  if (datos.name === bduser && datos.pass === bdpassword) {     
-    setAlerta({ tipo: 'success', mensaje: 'Inicio de sesión exitoso' });
-    console.log(datos)
-    //aquí pongo el dispatch para cambiar el estado a login en el store del redux
-    dispatch(authActions.login({
-    name: datos.name, //datos.user es el nombre de usuario que ha ingresado el usuario
-    rol: 'administrador' //rol es el rol que almacenaremos en el store
-    }))
-    navigate('/home');
-  } else {
-    setAlerta({ tipo: 'error', mensaje: 'Usuario o contraseña incorrectos' });
-    console.log(datos)
-  }
+    isVerifiedUser();
 };
 
  const handleChangeName = (e:any) =>{
@@ -54,6 +38,28 @@ const navigate = useNavigate()
  })
  }
 
+
+ async function isVerifiedUser () {
+ fetch(`http://localhost:3030/login?user=${datos.name}&password=${datos.pass}`)
+ .then(response => response.json())
+ .then (response => {
+ console.log('Lo que nos llega de la base de datos: ')
+ console.log(response.data)
+ if (response.data.length !== 0){
+setAlerta({ tipo: 'success', mensaje: 'Inicio de sesión exitoso' });
+    console.log(datos)
+    //aquí pongo el dispatch para cambiar el estado a login en el store del redux
+    dispatch(authActions.login({
+    name: datos.name, //datos.user es el nombre de usuario que ha ingresado el usuario
+    rol: 'administrador' //rol es el rol que almacenaremos en el store
+    }))
+    navigate('/home');
+ } else{
+setAlerta({ tipo: 'error', mensaje: 'Usuario o contraseña incorrectos' });
+    console.log(datos)
+ }
+})
+}
 
 
 
