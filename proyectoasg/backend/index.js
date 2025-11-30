@@ -1,44 +1,75 @@
-//importo el express y el cors
-const express = require('express')
-const cors = require('cors')
-//importo el fichero login.js que está en la carpeta services
-const login = require('./services/login')
+const express = require('express');
+const cors = require('cors');
+const login = require('./services/login');
+const items = require('./services/items');
 
-//Definimos el puerto por que va a escuchar nuestra API las peticiones
-const port  = 3030
+const app = express();
 
-const app = express()
-app.use(express.json())
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-)
-app.use(cors())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
+// endpoint de ejemplo
+app.get('/', (req, res) => {
+    res.json({ message: 'Mensaje prueba' });
+});
 
-
-//Ejemplo para ver cómo funciona un endpoint:
-//este endpoint / y devuelve un mensaje
-app.get('/', function (req, res) {
-    res.json({message: 'Hola Mundo!'})
-})
-
-//Creación del endpoint: /login
-//llama al fichero login.js usando el método getUserData pasándole
-//el login (user) y la contraseña (password)
-app.get('/login', async function(req, res, next) {
-    console.log(req.query)
-    console.log(req.query.user)
-    console.log(req.query.password)
+// endpoint login, llama al login.js para obtener los datos del usuario
+app.get('/login', async (req, res, next) => {
+    console.log(req.query);
     try {
-        res.json(await login.getUserData(req.query.user, req.query.password))
+        const resultado = await login.getUserData(req.query.user, req.query.password);
+        res.json(resultado);
     } catch (err) {
-        console.error(`Error while getting data `, err.message);
+        console.error('Error while getting data', err.message);
         next(err);
     }
-})
+});
 
-//Iniciamos la API
+// endpoint insertar item, llama al items.js para insertar los datos del item
+app.get('/addItem', async (req, res, next) => {
+    try {
+        const filas = await items.insertData(req);
+        if (filas > 0) {
+            res.json({ message: 'Datos guardados con éxito', filasAfectadas: filas });
+            console.log("Datos guardados con éxito");
+        } else {
+            res.json({ message: 'No se insertaron datos', filasAfectadas: filas });
+            console.log("No se insertaron datos");
+        }
+    } catch (err) {
+        console.error('Error while inserting items', err.message);
+        next(err);
+    }
+});
+
+// endpoint obtener items, llama al items.js para obtener los datos de los items
+app.get('/getItems', async (req, res, next) => {
+    try {
+        const resultado = await items.getData();
+        res.json(resultado);
+    } catch (err) {
+        console.error('Error while getting items', err.message);
+        next(err);
+    }
+});
+
+// endpoint borrar item, llama al items.js para borrar los datos del item
+app.get('/deleteItem', async (req, res, next) => {
+    try {
+        const filas = await items.deleteData(req);
+        if (filas > 0) {
+            res.json({ message: 'Item eliminado', filasAfectadas: filas });
+        } else {
+            res.json({ message: 'No se eliminó ningún item', filasAfectadas: filas });
+        }
+    } catch (err) {
+        console.error('Error while deleting items', err.message);
+        next(err);
+    }
+});
+
+//la api escucha por el puerto 3030
+const port = 3030
 app.listen(port)
-console.log('API escuchando en el puerto ' + port)
+console.log('API escuchando en el puerto ' + port);

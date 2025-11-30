@@ -1,4 +1,4 @@
-//Importamos el useSelector del react-redux
+/*//Importamos el useSelector del react-redux
 import { useSelector } from 'react-redux'
 // Importamos lo que necesitamos para el tipo del selector()
 // Importamos lo que necesitamos para el tipo del selector()
@@ -10,33 +10,25 @@ import { useNavigate } from 'react-router-dom';
 //Importamos el useDispatch del react-redux
 import { useDispatch} from 'react-redux'
 
+
 function Home(){
 const dispatch = useDispatch()
 const navigate = useNavigate()
 
-//Almacenamos en la variable userData lo que obtenemos del store usando el hook useSelector
-const userData = useSelector((state: RootState) => state.authenticator)
 
-//hacemos la funcion para salir de la página. ponemos el dispatch para cambiar el estado a 
-//logout en el store y navigate a la pagina principal
-const salirPagina = (e:any) => {
-  e.preventDefault();
-  dispatch(authActions.logout())
-  navigate('/');
-
-};
 //Comprobamos por la consola qué obtenemos del store
-console.log(userData)
+console.log(userData)*/
 
+import React from 'react';
+import Menu from './components/Menu';
+import Dashboard from './components/Dashboard';
+
+export default function Home() {
   return (
     <>
-    <br />
-    
-        <Typography variant="h1">Página Home de Aday Sánchez Guedes. <br />Soy el usuario {userData.userName} y tengo el rol de {userData.userRol} </Typography>
-    <br />
-    <Button  variant='outlined'  onClick={salirPagina} >Salir</Button>
+      <Menu />
+      <Dashboard />
     </>
-  )
+  );
 }
 
-export default Home
