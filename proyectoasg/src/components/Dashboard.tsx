@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Paper, TextField, Button, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { useDispatch, useSelector } from 'react-redux'
+import type { RootState } from '../store';
 
 // tipo de item
 interface ItemType {
@@ -15,6 +17,7 @@ interface ItemType {
 export default function Dashboard() {
     const [item, setItem] = useState<ItemType>({ nombre: '', tipo: '', marca: '', precio: 0 });
     const [datos, setDatos] = useState<ItemType[]>([]);
+    const userData = useSelector((state: RootState) => state.authenticator)
 
     // cargar datos al iniciar
     useEffect(() => { listar() }, []);
@@ -102,7 +105,8 @@ export default function Dashboard() {
             <Table aria-label="Tabla de items">
                 <TableHead>
                     <TableRow>
-                        <TableCell>Acciones</TableCell>
+                        {userData.userRol === "admin" && (
+                        <TableCell>Acciones</TableCell>)}
                         <TableCell>Nombre</TableCell>
                         <TableCell>Tipo</TableCell>
                         <TableCell>Marca</TableCell>
@@ -112,11 +116,14 @@ export default function Dashboard() {
                 <TableBody>
                     {datos.map(fila => (
                         <TableRow key={fila.id}>
+                            {userData.userRol === "admin" && (
                             <TableCell>
+                                
                                 <Button onClick={() => borrar(fila.id)}>
                                     <DeleteForeverIcon />
                                 </Button>
-                            </TableCell>
+                                
+                            </TableCell>)}
                             <TableCell>{fila.nombre}</TableCell>
                             <TableCell>{fila.tipo}</TableCell>
                             <TableCell>{fila.marca}</TableCell>

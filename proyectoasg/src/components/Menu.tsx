@@ -16,14 +16,15 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import HelpIcon from '@mui/icons-material/Help';
 import type { RootState } from '../store';
 import { useEffect } from 'react';
 import { authActions } from '../store/authSlice';
 import HomeIcon from '@mui/icons-material/Home';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import PersonIcon from '@mui/icons-material/Person';
 
 
 export default function Menu() {
@@ -58,15 +59,22 @@ export default function Menu() {
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => { navigate('/'); setOpen(false); }}>
+          <ListItemButton onClick={() => { navigate('/home'); setOpen(false); }}>
             <ListItemIcon><HomeIcon /></ListItemIcon>
             <ListItemText primary="Inicio" />
           </ListItemButton>
         </ListItem>
+        {userData.userRol === "admin" && (
         <ListItem disablePadding>
-          <ListItemButton onClick={() => { navigate('/informes'); setOpen(false); }}>
+          <ListItemButton onClick={() => { navigate('/reports'); setOpen(false); }}>
             <ListItemIcon><AssessmentIcon /></ListItemIcon>
             <ListItemText primary="Informes" />
+          </ListItemButton>
+        </ListItem>)}
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon><HelpIcon /></ListItemIcon>
+            <ListItemText primary="Ayuda" />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -82,7 +90,7 @@ export default function Menu() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             size="large"
@@ -98,9 +106,16 @@ export default function Menu() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             {userData.userName}
           </Typography>
-          <Button color="inherit" onClick={salirPagina}>Salir</Button>
+          <Button color="inherit">
+            {userData.userRol === "admin" && (
+            <AdminPanelSettingsIcon/>)}
+            {userData.userRol === "user" && (
+            <PersonIcon/>
+            )}
+          </Button>
         </Toolbar>
       </AppBar>
+      <Toolbar/>
     </Box>
   );
 }

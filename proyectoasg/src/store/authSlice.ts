@@ -29,12 +29,12 @@ const authSlice = createSlice({
         const userData = action.payload //Obtenemos el nombre y rol de usuario y lo asignamos a la variable userData
         state.isAutenticated = true //Establecemos a true isAutenticated en la store
         state.userName = userData.name //Es lo mismo que: action.payload.name --> Establecemos el nombre de usuario en la store
-        state.userRol = userData.rol //Es lo mismo que: action.payload.rol --> Establecemos el rol de usuario en la store
+        state.userRol = userData.userRol //Es lo mismo que: action.payload.rol --> Establecemos el rol de usuario en la store
     },
 //El reducer logout es cuando el usuario no está autenticado. No hay que hacer ninguna action puesto
 //que no recibimos ningún dato del usuario.
-    logout: (state) => {
-        state = initialAuthState // Cuando el usuario no está autenticado estamos en el estado inicial.
+ logout: () => {
+      return initialAuthState
     }
  }
 })

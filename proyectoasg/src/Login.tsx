@@ -47,11 +47,11 @@ const navigate = useNavigate()
  console.log(response.data)
  if (response.data.length !== 0){
 setAlerta({ tipo: 'success', mensaje: 'Inicio de sesión exitoso' });
-    console.log(datos)
+    console.log(response.data)
     //aquí pongo el dispatch para cambiar el estado a login en el store del redux
     dispatch(authActions.login({
-    name: datos.name, //datos.user es el nombre de usuario que ha ingresado el usuario
-    rol: 'administrador' //rol es el rol que almacenaremos en el store
+    name: response.data.nombre,   //user de la base de datos
+    userRol: response.data.rol    //rol en la base de datos
     }))
     navigate('/home');
  } else{
