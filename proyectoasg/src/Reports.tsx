@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Menu from './components/Menu';
 import Dashboard from './components/Dashboard';
-import { Box, Button, Paper } from '@mui/material';
+import { Box, Button, Paper, Tooltip } from '@mui/material';
 import InformeColeccion from './components/InformeColeccion';
 
 export default function Reports() {
@@ -29,7 +29,9 @@ export default function Reports() {
       <Menu />
       <Box sx={{ p: 2 }}>
         <Paper sx={{ p: 2, mb: 4 }}>
-          <Button type="submit" variant="contained" onClick={handleInformeColeccion}>INFORME COLECCION</Button>
+          <Tooltip title="Generar informe de la colección completa" arrow placement="bottom">
+            <Button type="submit" variant="contained" onClick={handleInformeColeccion}>INFORME COLECCION</Button>
+          </Tooltip>
         </Paper>
       {mostrarInforme && <InformeColeccion datos={coleccionData} />}
       </Box>

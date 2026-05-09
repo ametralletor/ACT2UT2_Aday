@@ -4,6 +4,7 @@ import { Box, Paper, TextField, Button, Table, TableHead, TableRow, TableCell, T
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../store';
+import Tooltip from '@mui/material/Tooltip';
 
 // tipo de item
 interface ItemType {
@@ -98,7 +99,9 @@ export default function Dashboard() {
                         onChange={e => setItem({ ...item, precio: Number(e.target.value) })}
                         fullWidth
                     />
-                    <Button type="submit" variant="contained" sx={{ mt: 2 }}>Insertar</Button>
+                    <Tooltip describeChild title="Insertar producto" arrow placement="top">
+                        <Button type="submit" variant="contained" sx={{ mt: 2 }}>Insertar</Button>
+                    </Tooltip>
                 </Box>
             </Paper>
 
@@ -118,10 +121,11 @@ export default function Dashboard() {
                         <TableRow key={fila.id}>
                             {userData.userRol === "admin" && (
                             <TableCell>
-                                
+                                <Tooltip title="Borrar producto" arrow placement="left">
                                 <Button onClick={() => borrar(fila.id)}>
                                     <DeleteForeverIcon />
                                 </Button>
+                                </Tooltip>
                                 
                             </TableCell>)}
                             <TableCell>{fila.nombre}</TableCell>

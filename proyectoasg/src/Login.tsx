@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { Alert, Box, Button, Grid, Icon, Paper, TextField } from '@mui/material'
+import { Alert, Box, Button, Grid, Icon, Paper, TextField, Tooltip } from '@mui/material'
 import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from 'react-router-dom';
 //Importamos el useDispatch del react-redux
@@ -93,7 +93,9 @@ setAlerta({ tipo: 'error', mensaje: 'Usuario o contraseña incorrectos' });
             />
           </Grid>
 
-          <Button variant='contained' fullWidth type='submit'>Acceder</Button>
+          <Tooltip title="Iniciar sesión con tus credenciales" arrow placement="bottom">
+            <Button variant='contained' fullWidth type='submit'>Acceder</Button>
+          </Tooltip>
         </Grid>
         {alerta.tipo && (
           <Alert severity={alerta.tipo} sx={{ mt: 2 }}>
